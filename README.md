@@ -50,3 +50,44 @@ compare 4,5 if 4>5 false then ==> 1 2 3 4 5(2 3 4 5) four bubbled up
 6    9    12   17   28    (18)
                     ->start     Find smallest and swap
 6    9    12   17   18    28
+
+
+
+03]INSERTION SORT[sor --> sorted, unsor--> unsorted]
+==================
+7                  4            6            5
+
+7        ]        4             6            5
+sor             unsor
+
+key = 4
+
+7             ///              6              5            ===>                4             7       ]       6              5              
+                                                                                                sor     unsor
+how to place /// ? all elements in sorted array > 4 than shift to right  
+
+
+key = 6
+4             7            ///             5              ==>                  4             6            7      ]       5 
+                                                                                                         sor          unsor
+how to place /// ? all elements in sorted array > 6 than shift to right  
+
+
+key = 5
+
+ 4             6            7             ///             ==>                   4          5          6               7
+
+ how to place /// ? all elements in sorted array > 5 than shift to right  
+
+
+
+
+
+
+
+
+
+
+
+
+
