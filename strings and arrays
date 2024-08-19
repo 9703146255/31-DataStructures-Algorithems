@@ -1,0 +1,980 @@
+1. Arrays and Strings
+Problems: 30-40
+Focus: Sliding window, two-pointer, sorting, searching, subarrays, dynamic arrays, string manipulations, and pattern matching.
+2. Linked Lists
+Problems: 20-25
+Focus: Operations (insertion, deletion, reversal), detecting cycles, merging lists, finding the intersection point, and linked list arithmetic (e.g., adding numbers).
+3. Stacks and Queues
+Problems: 15-20
+Focus: Implementation, usage in other data structures, problems like next greater element, stack-based DFS, and queue-based BFS.
+4. Hashing
+Problems: 15-20
+Focus: HashMap/HashSet usage, frequency counting, anagram problems, and subarray problems using hashing.
+5. Trees
+Problems: 30-35
+Focus: Traversals (in-order, pre-order, post-order), binary search trees (BST), balanced trees (AVL, Red-Black), tree construction from traversals, and common ancestor problems.
+6. Heaps
+Problems: 10-15
+Focus: Heap operations, priority queue problems, Kth smallest/largest elements, and heap-based optimizations.
+7. Graphs
+Problems: 20-25
+Focus: BFS, DFS, Dijkstra's algorithm, shortest path, graph traversal, cycle detection, and topological sorting.
+8. Dynamic Programming (DP)
+Problems: 30-40
+Focus: 0/1 Knapsack, longest common subsequence, matrix chain multiplication, DP on trees, and problems involving state transition optimization.
+9. Backtracking
+Problems: 10-15
+Focus: Combinatorial problems, N-Queens, subset generation, and permutation problems.
+10. Greedy Algorithms
+Problems: 10-15
+Focus: Interval scheduling, activity selection, greedy choice property, and optimization problems.
+11. Bit Manipulation
+Problems: 10-15
+Focus: Basic operations, tricks for checking/parity counting, subsets, and XOR-based problems.
+12. Tries
+Problems: 5-10
+Focus: Prefix tree operations, autocomplete systems, and pattern matching.
+13. Advanced Data Structures (Segment Trees, Fenwick Trees, etc.)
+Problems: 5-10
+Focus: Range queries, point updates, interval trees, and lazy propagation.
+14. Mathematical Problems
+Problems: 10-15
+Focus: Prime numbers, combinatorics, GCD/LCM, modular arithmetic, and number theory problems.
+15. Miscellaneous
+Problems: 10-15
+Focus: Anything that doesn’t fit neatly into the above categories but is frequently asked.
+Total: 210-280 problems
+This range should give you comprehensive coverage of the topics. It's essential to focus on the quality of learning each concept thoroughly rather than just the quantity of problems solved. Repeated practice, revisiting tricky problems, and understanding the underlying concepts are key.
+
+
+You said:
+1. Arrays and Strings: 40 problems first ive me these prblems
+ChatGPT said:
+ChatGPT
+Here are 10 example problems out of the 40 for the Arrays and Strings category, complete with inputs, outputs, and explanations. I'll provide these 10 first and can continue with more if you find them helpful.
+
+1. Maximum Subarray Sum (Kadane's Algorithm)
+Problem: Find the maximum sum of a contiguous subarray.
+Input: int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+Output: 6
+Explanation: The subarray [4, -1, 2, 1] has the largest sum = 6.
+Solution:
+java
+Copy code
+public int maxSubArray(int[] nums) {
+    int maxSoFar = nums[0];
+    int maxEndingHere = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+        maxEndingHere = Math.max(nums[i], maxEndingHere + nums[i]);
+        maxSoFar = Math.max(maxSoFar, maxEndingHere);
+    }
+    return maxSoFar;
+}
+2. Two Sum
+Problem: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+Input: int[] nums = {2, 7, 11, 15}; int target = 9;
+Output: [0, 1]
+Explanation: The numbers at indices 0 and 1 (2 + 7) sum up to 9.
+Solution:
+java
+Copy code
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] { map.get(complement), i };
+        }
+        map.put(nums[i], i);
+    }
+    throw new IllegalArgumentException("No two sum solution");
+}
+3. Move Zeroes
+Problem: Move all zeroes in an array to the end while maintaining the relative order of the other elements.
+Input: int[] nums = {0, 1, 0, 3, 12};
+Output: [1, 3, 12, 0, 0]
+Explanation: Move the zeroes to the end of the array.
+Solution:
+java
+Copy code
+public void moveZeroes(int[] nums) {
+    int j = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (nums[i] != 0) {
+            nums[j] = nums[i];
+            j++;
+        }
+    }
+    for (int i = j; i < nums.length; i++) {
+        nums[i] = 0;
+    }
+}
+4. Longest Substring Without Repeating Characters
+Problem: Find the length of the longest substring without repeating characters.
+Input: String s = "abcabcbb";
+Output: 3
+Explanation: The longest substring without repeating characters is "abc", with length 3.
+Solution:
+java
+Copy code
+public int lengthOfLongestSubstring(String s) {
+    int[] index = new int[128];
+    int maxLength = 0;
+    for (int j = 0, i = 0; j < s.length(); j++) {
+        i = Math.max(index[s.charAt(j)], i);
+        maxLength = Math.max(maxLength, j - i + 1);
+        index[s.charAt(j)] = j + 1;
+    }
+    return maxLength;
+}
+5. Longest Common Prefix
+Problem: Write a function to find the longest common prefix string amongst an array of strings.
+Input: String[] strs = {"flower", "flow", "flight"};
+Output: "fl"
+Explanation: The longest common prefix among the input strings is "fl".
+Solution:
+java
+Copy code
+public String longestCommonPrefix(String[] strs) {
+    if (strs == null || strs.length == 0) return "";
+    String prefix = strs[0];
+    for (int i = 1; i < strs.length; i++) {
+        while (strs[i].indexOf(prefix) != 0) {
+            prefix = prefix.substring(0, prefix.length() - 1);
+            if (prefix.isEmpty()) return "";
+        }
+    }
+    return prefix;
+}
+6. Container With Most Water
+Problem: Given n non-negative integers representing the heights of vertical lines, find two lines that together with the x-axis form a container, such that the container contains the most water.
+Input: int[] height = {1,8,6,2,5,4,8,3,7};
+Output: 49
+Explanation: The container formed by the lines at indices 1 and 8 (height 8 and 7) holds the most water, with an area of 49.
+Solution:
+java
+Copy code
+public int maxArea(int[] height) {
+    int maxArea = 0;
+    int left = 0;
+    int right = height.length - 1;
+    while (left < right) {
+        int width = right - left;
+        int area = Math.min(height[left], height[right]) * width;
+        maxArea = Math.max(maxArea, area);
+        if (height[left] < height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return maxArea;
+}
+7. Best Time to Buy and Sell Stock
+Problem: Given an array where each element is the price of a stock on a given day, find the maximum profit you can achieve by buying and selling one share of stock.
+Input: int[] prices = {7, 1, 5, 3, 6, 4};
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Solution:
+java
+Copy code
+public int maxProfit(int[] prices) {
+    int minPrice = Integer.MAX_VALUE;
+    int maxProfit = 0;
+    for (int price : prices) {
+        if (price < minPrice) {
+            minPrice = price;
+        } else if (price - minPrice > maxProfit) {
+            maxProfit = price - minPrice;
+        }
+    }
+    return maxProfit;
+}
+8. Product of Array Except Self
+Problem: Given an array nums of n integers where n > 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+Input: int[] nums = {1, 2, 3, 4};
+Output: [24, 12, 8, 6]
+Explanation: The product of all elements except self for each index is [24, 12, 8, 6].
+Solution:
+java
+Copy code
+public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] output = new int[n];
+    output[0] = 1;
+    for (int i = 1; i < n; i++) {
+        output[i] = output[i - 1] * nums[i - 1];
+    }
+    int right = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        output[i] *= right;
+        right *= nums[i];
+    }
+    return output;
+}
+9. Maximum Product Subarray
+Problem: Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+Input: int[] nums = {2, 3, -2, 4};
+Output: 6
+Explanation: The subarray [2, 3] has the largest product, which is 6.
+Solution:
+java
+Copy code
+public int maxProduct(int[] nums) {
+    int max = nums[0], min = nums[0], result = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+        int tempMax = max;
+        max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
+        min = Math.min(Math.min(tempMax * nums[i], min * nums[i]), nums[i]);
+        result = Math.max(result, max);
+    }
+    return result;
+}
+10. Find Minimum in Rotated Sorted Array
+Problem: Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand. Find the minimum element in the array.
+Input: int[] nums = {3, 4, 5, 1, 2};
+Output: 1
+Explanation: The minimum element in the rotated array is 1.
+Solution:
+java
+Copy code
+public int findMin(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int mid = left + (left - right) / 2;
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return nums[left];
+}
+These 10 problems cover a range of basic to intermediate concepts in Arrays and Strings. If you want more problems or explanations for any specific type, let me know!
+
+You said:
+CONTINUE
+ChatGPT said:
+ChatGPT
+Here are 10 more problems for the Arrays and Strings category, continuing from where we left off:
+
+11. Find the Duplicate Number
+Problem: Given an array of integers where each integer appears exactly twice except for one integer which appears only once, find the single number.
+Input: int[] nums = {1, 3, 4, 2, 2};
+Output: 2
+Explanation: The number 2 is the duplicate.
+Solution:
+java
+Copy code
+public int findDuplicate(int[] nums) {
+    int slow = nums[0];
+    int fast = nums[0];
+    do {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } while (slow != fast);
+
+    fast = nums[0];
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}
+12. Rotate Array
+Problem: Rotate an array to the right by k steps, where k is non-negative.
+Input: int[] nums = {1, 2, 3, 4, 5, 6, 7}; int k = 3;
+Output: [5, 6, 7, 1, 2, 3, 4]
+Explanation: Rotate the array by 3 positions to the right.
+Solution:
+java
+Copy code
+public void rotate(int[] nums, int k) {
+    k = k % nums.length;
+    reverse(nums, 0, nums.length - 1);
+    reverse(nums, 0, k - 1);
+    reverse(nums, k, nums.length - 1);
+}
+
+private void reverse(int[] nums, int start, int end) {
+    while (start < end) {
+        int temp = nums[start];
+        nums[start] = nums[end];
+        nums[end] = temp;
+        start++;
+        end--;
+    }
+}
+13. Single Number II
+Problem: Given an integer array where every element appears three times except for one, which appears exactly once, find that single one.
+Input: int[] nums = {2, 2, 3, 2};
+Output: 3
+Explanation: The number that appears only once is 3.
+Solution:
+java
+Copy code
+public int singleNumber(int[] nums) {
+    int ones = 0, twos = 0, threes = 0;
+    for (int num : nums) {
+        twos |= ones & num;
+        ones ^= num;
+        threes = ones & twos;
+        ones &= ~threes;
+        twos &= ~threes;
+    }
+    return ones;
+}
+14. Longest Palindromic Substring
+Problem: Given a string s, return the longest palindromic substring in s.
+Input: String s = "babad";
+Output: "bab" or "aba"
+Explanation: Both "bab" and "aba" are valid longest palindromic substrings.
+Solution:
+java
+Copy code
+public String longestPalindrome(String s) {
+    if (s == null || s.length() == 0) return "";
+    String result = "";
+    for (int i = 0; i < s.length(); i++) {
+        String s1 = expandAroundCenter(s, i, i);
+        String s2 = expandAroundCenter(s, i, i + 1);
+        String longer = s1.length() > s2.length() ? s1 : s2;
+        result = result.length() > longer.length() ? result : longer;
+    }
+    return result;
+}
+
+private String expandAroundCenter(String s, int left, int right) {
+    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+        left--;
+        right++;
+    }
+    return s.substring(left + 1, right);
+}
+15. Subarray Sum Equals K
+Problem: Given an array of integers and an integer k, return the total number of continuous subarrays whose sum equals k.
+Input: int[] nums = {1, 1, 1}; int k = 2;
+Output: 2
+Explanation: The subarrays with sum equal to 2 are [1, 1] and [1, 1].
+Solution:
+java
+Copy code
+public int subarraySum(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        if (map.containsKey(sum - k)) {
+            count += map.get(sum - k);
+        }
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+    }
+    return count;
+}
+16. Find All Numbers Disappeared in an Array
+Problem: Given an array containing n distinct numbers taken from 1 to n, find all the numbers that are missing from the array.
+Input: int[] nums = {4, 3, 2, 7, 8, 2, 1, 9};
+Output: [5, 6]
+Explanation: The numbers 5 and 6 are missing from the array.
+Solution:
+java
+Copy code
+public List<Integer> findDisappearedNumbers(int[] nums) {
+    List<Integer> result = new ArrayList<>();
+    for (int num : nums) {
+        int index = Math.abs(num) - 1;
+        if (nums[index] > 0) {
+            nums[index] = -nums[index];
+        }
+    }
+    for (int i = 0; i < nums.length; i++) {
+        if (nums[i] > 0) {
+            result.add(i + 1);
+        }
+    }
+    return result;
+}
+17. Top K Frequent Elements
+Problem: Given a non-empty array of integers, return the k most frequent elements.
+Input: int[] nums = {1, 1, 1, 2, 2, 3}; int k = 2;
+Output: [1, 2]
+Explanation: The two most frequent elements are 1 and 2.
+Solution:
+java
+Copy code
+public List<Integer> topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int num : nums) {
+        count.put(num, count.getOrDefault(num, 0) + 1);
+    }
+    PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+    heap.addAll(count.entrySet());
+    List<Integer> result = new ArrayList<>();
+    while (k-- > 0) {
+        result.add(heap.poll().getKey());
+    }
+    return result;
+}
+18. Find the Missing Number
+Problem: Given an array containing n distinct numbers taken from 0 to n, find the one that is missing.
+Input: int[] nums = {3, 0, 1};
+Output: 2
+Explanation: The missing number is 2.
+Solution:
+java
+Copy code
+public int missingNumber(int[] nums) {
+    int n = nums.length;
+    int sum = n * (n + 1) / 2;
+    for (int num : nums) {
+        sum -= num;
+    }
+    return sum;
+}
+19. Product of Array Except Self
+Problem: (Already covered previously, included for completeness)
+Input: int[] nums = {1, 2, 3, 4};
+Output: [24, 12, 8, 6]
+Explanation: The product of all elements except self for each index is [24, 12, 8, 6].
+Solution:
+java
+Copy code
+public int[] productExceptSelf(int[] nums) {
+    int n = nums.length;
+    int[] output = new int[n];
+    output[0] = 1;
+    for (int i = 1; i < n; i++) {
+        output[i] = output[i - 1] * nums[i - 1];
+    }
+    int right = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        output[i] *= right;
+        right *= nums[i];
+    }
+    return output;
+}
+20. Search Insert Position
+Problem: Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+Input: int[] nums = {1, 3, 5, 6}; int target = 5;
+Output: 2
+Explanation: The target value 5 is at index 2.
+Solution:
+java
+Copy code
+public int searchInsert(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+These 10 additional problems cover a variety of common scenarios involving arrays and strings. If you need more problems or have other questions, feel free to ask!
+
+
+3/3
+
+You said:
+CONTINUE
+ChatGPT said:
+ChatGPT
+Here are the next 10 problems for the Arrays and Strings category:
+
+21. Longest Increasing Subsequence
+Problem: Given an integer array, find the length of the longest strictly increasing subsequence.
+Input: int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+Output: 4
+Explanation: The longest increasing subsequence is [2, 3, 7, 101] with length 4.
+Solution:
+java
+Copy code
+public int lengthOfLIS(int[] nums) {
+    int n = nums.length;
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (nums[i] > nums[j]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    return Arrays.stream(dp).max().getAsInt();
+}
+22. Find All Anagrams in a String
+Problem: Given two strings s and p, return an array of all the start indices of p’s anagrams in s.
+Input: String s = "cbaebabacd"; String p = "abc";
+Output: [0, 6]
+Explanation: The anagrams of "abc" in "cbaebabacd" are "cba" at index 0 and "bac" at index 6.
+Solution:
+java
+Copy code
+public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> result = new ArrayList<>();
+    if (s.length() < p.length()) return result;
+    
+    int[] pCount = new int[26];
+    int[] sCount = new int[26];
+    
+    for (char c : p.toCharArray()) pCount[c - 'a']++;
+    for (int i = 0; i < p.length(); i++) sCount[s.charAt(i) - 'a']++;
+    
+    if (Arrays.equals(pCount, sCount)) result.add(0);
+    
+    for (int i = p.length(); i < s.length(); i++) {
+        sCount[s.charAt(i) - 'a']++;
+        sCount[s.charAt(i - p.length()) - 'a']--;
+        if (Arrays.equals(pCount, sCount)) result.add(i - p.length() + 1);
+    }
+    
+    return result;
+}
+23. Group Anagrams
+Problem: Given an array of strings, group the anagrams together.
+Input: String[] strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+Output: [["eat","tea","ate"],["tan","nat"],["bat"]]
+Explanation: Strings that are anagrams are grouped together.
+Solution:
+java
+Copy code
+public List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String str : strs) {
+        char[] chars = str.toCharArray();
+        Arrays.sort(chars);
+        String sorted = new String(chars);
+        map.computeIfAbsent(sorted, k -> new ArrayList<>()).add(str);
+    }
+    return new ArrayList<>(map.values());
+}
+24. Maximum Length of a Concatenated String with Unique Characters
+Problem: Given an array of strings, you can concatenate some of these strings together to form a new string. Find the maximum length of such a string with unique characters.
+Input: String[] arr = {"un", "iq", "ue"};
+Output: 4
+Explanation: The maximum length of a concatenated string with unique characters is 4 ("uniq" or "ique").
+Solution:
+java
+Copy code
+public int maxLength(List<String> arr) {
+    List<String> list = new ArrayList<>();
+    list.add("");
+    for (String s : arr) {
+        if (hasUniqueChars(s)) {
+            List<String> newList = new ArrayList<>();
+            for (String cur : list) {
+                String concat = cur + s;
+                if (hasUniqueChars(concat)) {
+                    newList.add(concat);
+                }
+            }
+            list.addAll(newList);
+        }
+    }
+    int maxLen = 0;
+    for (String s : list) {
+        maxLen = Math.max(maxLen, s.length());
+    }
+    return maxLen;
+}
+
+private boolean hasUniqueChars(String s) {
+    Set<Character> set = new HashSet<>();
+    for (char c : s.toCharArray()) {
+        if (!set.add(c)) {
+            return false;
+        }
+    }
+    return true;
+}
+25. Valid Anagram
+Problem: Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+Input: String s = "anagram"; String t = "nagaram";
+Output: true
+Explanation: "nagaram" is an anagram of "anagram".
+Solution:
+java
+Copy code
+public boolean isAnagram(String s, String t) {
+    if (s.length() != t.length()) return false;
+    int[] count = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        count[s.charAt(i) - 'a']++;
+        count[t.charAt(i) - 'a']--;
+    }
+    for (int c : count) {
+        if (c != 0) return false;
+    }
+    return true;
+}
+26. Find Minimum in Rotated Sorted Array II
+Problem: Suppose an array sorted in ascending order is rotated at some pivot. This time, the array may contain duplicates. Find the minimum element.
+Input: int[] nums = {2, 2, 2, 0, 1};
+Output: 0
+Explanation: The minimum element in the rotated sorted array with duplicates is 0.
+Solution:
+java
+Copy code
+public int findMin(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < nums[right]) {
+            right = mid;
+        } else if (nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right--;
+        }
+    }
+    return nums[left];
+}
+27. Reverse Words in a String
+Problem: Given an input string s, reverse the order of the words.
+Input: String s = "the sky is blue";
+Output: "blue is sky the"
+Explanation: Reverse the words in the input string.
+Solution:
+java
+Copy code
+public String reverseWords(String s) {
+    String[] words = s.trim().split("\\s+");
+    StringBuilder reversed = new StringBuilder();
+    for (int i = words.length - 1; i >= 0; i--) {
+        reversed.append(words[i]).append(" ");
+    }
+    return reversed.toString().trim();
+}
+28. Sort Colors
+Problem: Given an array with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent.
+Input: int[] nums = {2, 0, 2, 1, 1, 0};
+Output: [0, 0, 1, 1, 2, 2]
+Explanation: Sort the array such that all 0s come first, followed by 1s, and 2s last.
+Solution:
+java
+Copy code
+public void sortColors(int[] nums) {
+    int low = 0, mid = 0, high = nums.length - 1;
+    while (mid <= high) {
+        if (nums[mid] == 0) {
+            swap(nums, low++, mid++);
+        } else if (nums[mid] == 1) {
+            mid++;
+        } else {
+            swap(nums, mid, high--);
+        }
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+29. Find Peak Element
+Problem: A peak element in an array is an element that is greater than its neighbors. Given an array of integers, find a peak element.
+Input: int[] nums = {1, 2, 3, 1};
+Output: 2
+Explanation: The peak element is 3, which is greater than its neighbors 2 and 1.
+Solution:
+java
+Copy code
+public int findPeakElement(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] > nums[mid + 1]) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+30. Longest Substring Without Repeating Characters
+Problem: Given a string, find the length of the longest substring without repeating characters.
+Input: String s = "abcabcbb";
+Output: 3
+Explanation: The longest substring without repeating characters is "abc", which has length 3.
+Solution:
+java
+Copy code
+public int lengthOfLongestSubstring(String s) {
+    Set<Character> set = new HashSet<>();
+    int left = 0, maxLength = 0;
+    for (int right = 0; right < s.length(); right++) {
+        while (set.contains(s.charAt(right))) {
+            set.remove(s.charAt(left++));
+        }
+        set.add(s.charAt(right));
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    return maxLength;
+}
+These problems cover various fundamental concepts in arrays and strings, helping you strengthen your understanding and problem-solving skills. Let me know if you need further problems or explanations!
+
+You said:
+CONTINUE
+ChatGPT said:
+ChatGPT
+Here are the remaining 10 problems for the Arrays and Strings category:
+
+31. 3Sum
+Problem: Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i, j, and k are distinct indices, and nums[i] + nums[j] + nums[k] == 0.
+Input: int[] nums = {-1, 0, 1, 2, -1, -4};
+Output: [[-1, -1, 2], [-1, 0, 1]]
+Explanation: The solution sets are [-1, -1, 2] and [-1, 0, 1].
+Solution:
+java
+Copy code
+public List<List<Integer>> threeSum(int[] nums) {
+    Arrays.sort(nums);
+    List<List<Integer>> result = new ArrayList<>();
+    for (int i = 0; i < nums.length - 2; i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        int left = i + 1, right = nums.length - 1;
+        while (left < right) {
+            int sum = nums[i] + nums[left] + nums[right];
+            if (sum == 0) {
+                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                while (left < right && nums[left] == nums[left + 1]) left++;
+                while (left < right && nums[right] == nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (sum < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
+}
+32. Container With Most Water
+Problem: Given an array of integers representing the height of lines on a chart, find two lines that together with the x-axis form a container that would hold the most water.
+Input: int[] height = {1,8,6,2,5,4,8,3,7};
+Output: 49
+Explanation: The maximum area is formed between the lines at indices 1 and 8 with heights 8 and 7, respectively.
+Solution:
+java
+Copy code
+public int maxArea(int[] height) {
+    int left = 0, right = height.length - 1;
+    int maxArea = 0;
+    while (left < right) {
+        int width = right - left;
+        int minHeight = Math.min(height[left], height[right]);
+        maxArea = Math.max(maxArea, width * minHeight);
+        if (height[left] < height[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return maxArea;
+}
+33. Minimum Window Substring
+Problem: Given two strings s and t, return the minimum window in s which will contain all the characters in t. If no such window exists, return an empty string.
+Input: String s = "ADOBECODEBANC"; String t = "ABC";
+Output: "BANC"
+Explanation: The minimum window containing all characters of t is "BANC".
+Solution:
+java
+Copy code
+public String minWindow(String s, String t) {
+    Map<Character, Integer> tCount = new HashMap<>();
+    for (char c : t.toCharArray()) {
+        tCount.put(c, tCount.getOrDefault(c, 0) + 1);
+    }
+    
+    int required = tCount.size();
+    int l = 0, r = 0;
+    int formed = 0;
+    Map<Character, Integer> windowCount = new HashMap<>();
+    int[] ans = {-1, 0, 0}; // window length, left, right
+    
+    while (r < s.length()) {
+        char c = s.charAt(r);
+        windowCount.put(c, windowCount.getOrDefault(c, 0) + 1);
+        if (tCount.containsKey(c) && windowCount.get(c).intValue() == tCount.get(c).intValue()) {
+            formed++;
+        }
+        
+        while (l <= r && formed == required) {
+            c = s.charAt(l);
+            if (ans[0] == -1 || r - l + 1 < ans[0]) {
+                ans[0] = r - l + 1;
+                ans[1] = l;
+                ans[2] = r;
+            }
+            windowCount.put(c, windowCount.get(c) - 1);
+            if (tCount.containsKey(c) && windowCount.get(c).intValue() < tCount.get(c).intValue()) {
+                formed--;
+            }
+            l++;
+        }
+        r++;
+    }
+    
+    return ans[0] == -1 ? "" : s.substring(ans[1], ans[2] + 1);
+}
+34. Find Minimum in Rotated Sorted Array
+Problem: Given a sorted array of unique integers that has been rotated at an unknown pivot, find the minimum element.
+Input: int[] nums = {3, 4, 5, 1, 2};
+Output: 1
+Explanation: The minimum element in the rotated array is 1.
+Solution:
+java
+Copy code
+public int findMin(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return nums[left];
+}
+35. Implement strStr()
+Problem: Implement the strStr() function. Given two strings haystack and needle, return the index of the first occurrence of needle in haystack. Return -1 if needle is not part of haystack.
+Input: String haystack = "hello"; String needle = "ll";
+Output: 2
+Explanation: The first occurrence of "ll" is at index 2.
+Solution:
+java
+Copy code
+public int strStr(String haystack, String needle) {
+    if (needle.isEmpty()) return 0;
+    int m = haystack.length(), n = needle.length();
+    for (int i = 0; i <= m - n; i++) {
+        if (haystack.substring(i, i + n).equals(needle)) {
+            return i;
+        }
+    }
+    return -1;
+}
+36. Search in Rotated Sorted Array
+Problem: Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand. You are given a target value to search. If found in the array, return its index, otherwise return -1.
+Input: int[] nums = {4, 5, 6, 7, 0, 1, 2}; int target = 0;
+Output: 4
+Explanation: The target value 0 is at index 4.
+Solution:
+java
+Copy code
+public int search(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        } else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+37. Remove Duplicates from Sorted Array
+Problem: Given a sorted array, remove the duplicates in-place such that each element appears only once and returns the new length.
+Input: int[] nums = {1, 1, 2};
+Output: 2
+Explanation: The array after removing duplicates is [1, 2].
+Solution:
+java
+Copy code
+public int removeDuplicates(int[] nums) {
+    if (nums.length == 0) return 0;
+    int length = 1;
+    for (int i = 1; i < nums.length; i++) {
+        if (nums[i] != nums[i - 1]) {
+            nums[length++] = nums[i];
+        }
+    }
+    return length;
+}
+38. Valid Parentheses
+Problem: Given a string containing just the characters (, ), {, }, [ and ], determine if the input string is valid.
+Input: String s = "()[]{}";
+Output: true
+Explanation: The string is valid.
+Solution:
+java
+Copy code
+public boolean isValid(String s) {
+    Stack<Character> stack = new Stack<>();
+    for (char c : s.toCharArray()) {
+        if (c == '(' || c == '[' || c == '{') {
+            stack.push(c);
+        } else {
+            if (stack.isEmpty()) return false;
+            char top = stack.pop();
+            if (c == ')' && top != '(' || c == ']' && top != '[' || c == '}' && top != '{') {
+                return false;
+            }
+        }
+    }
+    return stack.isEmpty();
+}
+39. Rotate Array
+Problem: Given an array, rotate the array to the right by k steps, where k is non-negative.
+Input: int[] nums = {1, 2, 3, 4, 5, 6, 7}; int k = 3;
+Output: [5, 6, 7, 1, 2, 3, 4]
+Explanation: The array is rotated 3 steps to the right.
+Solution:
+java
+Copy code
+public void rotate(int[] nums, int k) {
+    k = k % nums.length;
+    reverse(nums, 0, nums.length - 1);
+    reverse(nums, 0, k - 1);
+    reverse(nums, k, nums.length - 1);
+}
+
+private void reverse(int[] nums, int start, int end) {
+    while (start < end) {
+        int temp = nums[start];
+        nums[start] = nums[end];
+        nums[end] = temp;
+        start++;
+        end--;
+    }
+}
+40. Search Insert Position
+Problem: Given a sorted array and a target value, return the index where the target value should be inserted in the array to keep it sorted.
+Input: int[] nums = {1, 3, 5, 6}; int target = 2;
+Output: 1
+Explanation: The target value 2 should be inserted at index 1 to maintain the sorted order.
+Solution:
+java
+Copy code
+public int searchInsert(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
