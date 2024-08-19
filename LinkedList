@@ -1,0 +1,1285 @@
+2. Linked Lists
+Problems: 20-25
+Focus: Operations (insertion, deletion, reversal), detecting cycles, merging lists, finding the intersection point, and linked list arithmetic
+
+
+
+1. Remove N-th Node from End
+2. Delete a Node Without Head Pointer
+3. Add Two Numbers Represented by Linked Lists
+4. Detect Loop in a Linked List
+5. Find the Intersection Point of Two Linked Lists
+6. Merge Two Sorted Linked Lists
+7. Flatten a Multilevel Doubly Linked List
+8. Rotate Linked List
+9. Palindrome Linked List
+10. Copy List with Random Pointer
+11. Reorder List
+12. Partition List
+13. Reverse a Linked List
+14. Remove Duplicates from a Sorted Linked List
+15. Remove Duplicates from an Unsorted Linked List
+16. Remove Elements from a Linked List
+17. Find the Middle of the Linked List
+18. Find the Length of a Loop in a Linked List
+19. Add One to a Number Represented by a Linked List
+20. Reverse Nodes in k-Group
+21. Merge Two Sorted Lists
+22. Reverse a Linked List
+23. Intersection of Two Linked Lists (Detecting the Intersection Node)
+24. Detect a Cycle in a Linked List
+25. Flatten a Multilevel Doubly Linked List
+26. Reverse Nodes in k-Group (with Modifications)
+27. Find the Middle Node of a Linked List
+28. Remove Duplicates from a Sorted Linked List
+29. Remove Duplicates from an Unsorted Linked List
+30. Add Two Numbers Represented by Linked Lists (Forward Order)
+31. Split a Circular Linked List into Two Halves
+32. Find the Start of the Loop in a Linked List
+33. Delete Node in a Linked List
+34. Remove Elements from a Linked List
+35. Delete Middle Node of a Linked List
+
+
+
+---------------------------------------------------------------------------------------
+1. Reverse a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Reverse a singly linked list.
+
+Input:
+
+A linked list: 1 -> 2 -> 3 -> 4 -> 5
+Output:
+
+Reversed linked list: 5 -> 4 -> 3 -> 2 -> 1
+Logic:
+
+Use three pointers: prev, current, and next. Initialize prev as null and current as the head of the list. Iterate through the list, adjusting the next pointers to reverse the links between nodes.
+Code:
+
+java
+Copy code
+public ListNode reverseList(ListNode head) {
+    ListNode prev = null;
+    ListNode current = head;
+    while (current != null) {
+        ListNode next = current.next;
+        current.next = prev;
+        prev = current;
+        current = next;
+    }
+    return prev;
+}
+---------------------------------------------------------------------------------------
+2. Detect a Cycle in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Detect if a linked list has a cycle.
+
+Input:
+
+A linked list with a cycle: 1 -> 2 -> 3 -> 4 -> 5 -> 3
+Output:
+
+True
+Logic:
+
+Use Floyd’s Cycle Detection algorithm (Tortoise and Hare). Use two pointers: one moves one step at a time (slow), and the other moves two steps at a time (fast). If they meet, a cycle exists.
+Code:
+
+java
+Copy code
+public boolean hasCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) {
+            return true;
+        }
+    }
+    return false;
+}
+---------------------------------------------------------------------------------------
+3. Merge Two Sorted Linked Lists
+---------------------------------------------------------------------------------------
+
+Problem: Merge two sorted linked lists into a new sorted list.
+
+Input:
+
+List 1: 1 -> 3 -> 5
+List 2: 2 -> 4 -> 6
+Output:
+
+Merged list: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Logic:
+
+Use a dummy node to start. Compare nodes from both lists and attach the smaller node to the result list. Continue until one list is exhausted, then append the remaining nodes of the other list.
+Code:
+
+java
+Copy code
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode current = dummy;
+    while (l1 != null && l2 != null) {
+        if (l1.val < l2.val) {
+            current.next = l1;
+            l1 = l1.next;
+        } else {
+            current.next = l2;
+            l2 = l2.next;
+        }
+        current = current.next;
+    }
+    current.next = (l1 != null) ? l1 : l2;
+    return dummy.next;
+}
+
+---------------------------------------------------------------------------------------
+4. Find the Intersection Point of Two Linked Lists
+---------------------------------------------------------------------------------------
+
+Problem: Find the node where two linked lists intersect.
+
+Input:
+
+List 1: 1 -> 2 -> 3 -> 4 -> 5
+List 2: 6 -> 7 -> 4 -> 5
+Output:
+
+Intersection point: 4
+Logic:
+
+Use two pointers, one starting at each list. Traverse both lists. If they meet, return the intersection node. If not, continue the traversal after switching to the other list.
+Code:
+
+java
+Copy code
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) return null;
+    ListNode a = headA;
+    ListNode b = headB;
+    while (a != b) {
+        a = (a == null) ? headB : a.next;
+        b = (b == null) ? headA : b.next;
+    }
+    return a;
+}
+---------------------------------------------------------------------------------------
+5. Add Two Numbers Represented by Linked Lists
+---------------------------------------------------------------------------------------
+
+Problem: Add two numbers represented by linked lists where each node contains a single digit.
+
+Input:
+
+List 1: 2 -> 4 -> 3 (represents number 342)
+List 2: 5 -> 6 -> 4 (represents number 465)
+Output:
+
+Sum list: 7 -> 0 -> 8 (represents number 807)
+Logic:
+
+Traverse both lists while maintaining a carry. Sum corresponding nodes and handle the carry for the next digit.
+Code:
+
+java
+Copy code
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode p = l1, q = l2, curr = dummy;
+    int carry = 0;
+    while (p != null || q != null) {
+        int x = (p != null) ? p.val : 0;
+        int y = (q != null) ? q.val : 0;
+        int sum = carry + x + y;
+        carry = sum / 10;
+        curr.next = new ListNode(sum % 10);
+        curr = curr.next;
+        if (p != null) p = p.next;
+        if (q != null) q = q.next;
+    }
+    if (carry > 0) {
+        curr.next = new ListNode(carry);
+    }
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+6. Remove Duplicates from Sorted Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Remove duplicates from a sorted linked list.
+
+Input:
+
+Sorted list: 1 -> 1 -> 2 -> 3 -> 3
+Output:
+
+List without duplicates: 1 -> 2 -> 3
+Logic:
+
+Traverse the list and use a pointer to check if the current node’s value is the same as the next node’s value. If so, skip the next node.
+Code:
+
+java
+Copy code
+public ListNode deleteDuplicates(ListNode head) {
+    ListNode current = head;
+    while (current != null && current.next != null) {
+        if (current.val == current.next.val) {
+            current.next = current.next.next;
+        } else {
+            current = current.next;
+        }
+    }
+    return head;
+}
+
+---------------------------------------------------------------------------------------
+7. Detect the Starting Node of the Cycle in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Given a linked list with a cycle, find the starting node of the cycle.
+
+Input:
+
+List with cycle starting at node with value 3.
+Output:
+
+Node with value 3
+Logic:
+
+Use Floyd’s Cycle Detection algorithm to find the meeting point. Reset one pointer to the head and keep the other at the meeting point. Move both one step at a time; the node where they meet is the start of the cycle.
+Code:
+
+java
+Copy code
+public ListNode detectCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) {
+            ListNode start = head;
+            while (start != slow) {
+                start = start.next;
+                slow = slow.next;
+            }
+            return start;
+        }
+    }
+    return null;
+}
+---------------------------------------------------------------------------------------
+8. Flatten a Multilevel Doubly Linked List
+---------------------------------------------------------------------------------------
+Problem: Flatten a multilevel doubly linked list.
+
+Input:
+
+1 -> 2 -> 3 -> 4 (with a child list starting at 2 with nodes 7 -> 8 -> 9)
+Output:
+
+Flattened list: 1 -> 2 -> 7 -> 8 -> 9 -> 3 -> 4
+Logic:
+
+Use a depth-first search approach. Traverse nodes, and when a child node is encountered, flatten the child list and connect it to the parent list.
+Code:
+
+java
+Copy code
+public Node flatten(Node head) {
+    Node dummy = new Node(0, null, null, head);
+    Node curr = dummy;
+    while (curr != null) {
+        if (curr.child != null) {
+            Node next = curr.next;
+            curr.next = curr.child;
+            curr.child.prev = curr;
+            curr.child = null;
+            while (curr.next != null) {
+                curr = curr.next;
+            }
+            curr.next = next;
+            if (next != null) {
+                next.prev = curr;
+            }
+        }
+        curr = curr.next;
+    }
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+9. Find the Middle of a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Find the middle node of a linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+Output:
+
+Middle node: 3
+Logic:
+
+Use the two-pointer technique. Move one pointer by one step and the other by two steps. When the fast pointer reaches the end, the slow pointer will be at the middle.
+Code:
+
+java
+Copy code
+public ListNode findMiddle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+---------------------------------------------------------------------------------------
+10. Swap Nodes in Pairs
+---------------------------------------------------------------------------------------   
+
+
+Problem: Swap every two adjacent nodes in a linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4
+Output:
+
+Swapped list: 2 -> 1 -> 4 -> 3
+Logic:
+
+Use a dummy node and swap nodes in pairs by adjusting the next pointers.
+Code:
+
+java
+Copy code
+public ListNode swapPairs(ListNode head) {
+    ListNode dummy = new ListNode(-1);
+    dummy.next = head;
+    ListNode prev = dummy;
+    while (head != null && head.next != null) {
+        ListNode first = head;
+        ListNode second = head.next;
+        prev.next = second;
+        first.next = second.next;
+        second.next = first;
+        prev = first;
+        head = first.next;
+    }
+    return dummy.next;
+}
+Feel free to modify or extend these problems based on your needs. Let me know if you need more details or additional problems!
+
+
+You said:
+continue
+ChatGPT said:
+ChatGPT
+Sure, here are some more linked list problems with their answers, inputs, outputs, and logic:
+---------------------------------------------------------------------------------------
+11. Remove N-th Node from End of List
+---------------------------------------------------------------------------------------
+
+Problem: Remove the N-th node from the end of a linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+N: 2
+Output:
+
+List after removal: 1 -> 2 -> 3 -> 5
+Logic:
+
+Use two pointers: first and second. Move the first pointer N steps ahead. Then, move both pointers together until the first pointer reaches the end. The second pointer will be at the node before the node to be removed. Adjust the pointers accordingly.
+Code:
+
+java
+Copy code
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode first = dummy;
+    ListNode second = dummy;
+    for (int i = 0; i <= n; i++) {
+        first = first.next;
+    }
+    while (first != null) {
+        first = first.next;
+        second = second.next;
+    }
+    second.next = second.next.next;
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+12. Rotate a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Rotate a linked list to the right by k places.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+k: 2
+Output:
+
+Rotated list: 4 -> 5 -> 1 -> 2 -> 3
+Logic:
+
+Find the length of the list and connect the last node to the head to form a circular list. Move the pointer to the new end of the list, break the loop, and set the new head.
+Code:
+
+java
+Copy code
+public ListNode rotateRight(ListNode head, int k) {
+    if (head == null || k == 0) return head;
+    ListNode oldTail = head;
+    int length = 1;
+    while (oldTail.next != null) {
+        oldTail = oldTail.next;
+        length++;
+    }
+    oldTail.next = head;
+    int newTailPos = length - k % length;
+    ListNode newTail = head;
+    for (int i = 1; i < newTailPos; i++) {
+        newTail = newTail.next;
+    }
+    ListNode newHead = newTail.next;
+    newTail.next = null;
+    return newHead;
+}
+---------------------------------------------------------------------------------------
+13. Partition List
+---------------------------------------------------------------------------------------
+
+Problem: Partition a linked list around a value x, such that all nodes less than x come before nodes greater than or equal to x.
+
+Input:
+
+List: 1 -> 4 -> 3 -> 2 -> 5 -> 2
+x: 3
+Output:
+
+Partitioned list: 1 -> 2 -> 2 -> 4 -> 3 -> 5
+Logic:
+
+Use two dummy nodes to create two lists: one for nodes less than x and one for nodes greater than or equal to x. Append the second list to the end of the first list.
+Code:
+
+java
+Copy code
+public ListNode partition(ListNode head, int x) {
+    ListNode beforeHead = new ListNode(0);
+    ListNode afterHead = new ListNode(0);
+    ListNode before = beforeHead;
+    ListNode after = afterHead;
+    while (head != null) {
+        if (head.val < x) {
+            before.next = head;
+            before = before.next;
+        } else {
+            after.next = head;
+            after = after.next;
+        }
+        head = head.next;
+    }
+    after.next = null;
+    before.next = afterHead.next;
+    return beforeHead.next;
+}
+---------------------------------------------------------------------------------------
+14. Add Two Numbers Represented by Linked Lists (Reverse Order)
+---------------------------------------------------------------------------------------
+
+Problem: Add two numbers represented by linked lists where each node contains a single digit and the digits are stored in reverse order.
+
+Input:
+
+List 1: 2 -> 4 -> 3 (represents number 342)
+List 2: 5 -> 6 -> 4 (represents number 465)
+Output:
+
+Sum list: 7 -> 0 -> 8 (represents number 807)
+Logic:
+
+Traverse both lists and sum corresponding nodes, taking care of the carry. Continue until both lists are exhausted.
+Code:
+
+java
+Copy code
+public ListNode addTwoNumbersReverse(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode p = l1, q = l2, curr = dummy;
+    int carry = 0;
+    while (p != null || q != null) {
+        int x = (p != null) ? p.val : 0;
+        int y = (q != null) ? q.val : 0;
+        int sum = carry + x + y;
+        carry = sum / 10;
+        curr.next = new ListNode(sum % 10);
+        curr = curr.next;
+        if (p != null) p = p.next;
+        if (q != null) q = q.next;
+    }
+    if (carry > 0) {
+        curr.next = new ListNode(carry);
+    }
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+15. Clone a Linked List with Random Pointers
+---------------------------------------------------------------------------------------
+
+Problem: Clone a linked list with next and random pointers.
+
+Input:
+
+List with next and random pointers.
+Output:
+
+Cloned list with same next and random pointers.
+Logic:
+
+Use a hash map to store the mapping between original nodes and their clones. First, copy all nodes and store them in the map. Then, set the next and random pointers for each node in the clone list based on the original list.
+Code:
+
+java
+Copy code
+public Node copyRandomList(Node head) {
+    if (head == null) return null;
+    Map<Node, Node> map = new HashMap<>();
+    Node curr = head;
+    while (curr != null) {
+        map.put(curr, new Node(curr.val));
+        curr = curr.next;
+    }
+    curr = head;
+    while (curr != null) {
+        map.get(curr).next = map.get(curr.next);
+        map.get(curr).random = map.get(curr.random);
+        curr = curr.next;
+    }
+    return map.get(head);
+}
+---------------------------------------------------------------------------------------
+16. Intersection of Two Linked Lists
+---------------------------------------------------------------------------------------
+
+Problem: Find the intersection node of two linked lists.
+
+Input:
+
+List 1: 1 -> 2 -> 3 -> 4 -> 5
+List 2: 6 -> 7 -> 4 -> 5 (intersects at 4)
+Output:
+
+Intersection node: 4
+Logic:
+
+Use two pointers, one for each list. Traverse each list and switch to the other list when reaching the end. The intersection node will be reached after traversing both lists.
+Code:
+
+java
+Copy code
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) return null;
+    ListNode a = headA;
+    ListNode b = headB;
+    while (a != b) {
+        a = (a == null) ? headB : a.next;
+        b = (b == null) ? headA : b.next;
+    }
+    return a;
+}
+---------------------------------------------------------------------------------------
+17. Check if a Linked List is a Palindrome
+---------------------------------------------------------------------------------------
+
+Problem: Check if a linked list is a palindrome.
+
+Input:
+
+List: 1 -> 2 -> 2 -> 1
+Output:
+
+True
+Logic:
+
+Use the fast and slow pointer technique to find the middle of the list. Reverse the second half of the list and compare it with the first half.
+Code:
+
+java
+Copy code
+public boolean isPalindrome(ListNode head) {
+    if (head == null || head.next == null) return true;
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    ListNode secondHalf = reverse(slow);
+    ListNode firstHalf = head;
+    while (secondHalf != null) {
+        if (firstHalf.val != secondHalf.val) return false;
+        firstHalf = firstHalf.next;
+        secondHalf = secondHalf.next;
+    }
+    return true;
+}
+
+private ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    ListNode curr = head;
+    while (curr != null) {
+        ListNode next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+---------------------------------------------------------------------------------------
+18. Find the Length of a Loop in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Find the length of the loop in a linked list.
+
+Input:
+
+List with a loop.
+Output:
+
+Length of the loop.
+Logic:
+
+Use Floyd’s Cycle Detection algorithm to find the meeting point. Then, use another pointer to count the number of nodes in the loop.
+Code:
+
+java
+Copy code
+public int countNodesInLoop(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    boolean hasCycle = false;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) {
+            hasCycle = true;
+            break;
+        }
+    }
+    if (!hasCycle) return 0;
+    int length = 0;
+    do {
+        slow = slow.next;
+        length++;
+    } while (slow != fast);
+    return length;
+}
+---------------------------------------------------------------------------------------
+19. Add One to a Number Represented by a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Add one to a number represented by a linked list where each node contains a single digit.
+
+Input:
+
+List: 1 -> 2 -> 3 (represents 123)
+Output:
+
+List after addition: 1 -> 2 -> 4 (represents 124)
+Logic:
+
+Traverse the list from the end, handling carry propagation as you go. If the most significant digit is affected, adjust the list accordingly.
+Code:
+
+java
+Copy code
+public ListNode plusOne(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode lastNotNine = dummy;
+    ListNode curr = head;
+    while (curr != null) {
+        if (curr.val != 9) {
+            lastNotNine = curr;
+        }
+        curr = curr.next;
+    }
+    lastNotNine.val++;
+    curr = lastNotNine.next;
+    while (curr != null) {
+        curr.val = 0;
+        curr = curr.next;
+    }
+    return dummy.val == 0 ? dummy.next : dummy;
+}
+---------------------------------------------------------------------------------------
+20. Reverse Nodes in k-Group
+---------------------------------------------------------------------------------------
+
+Problem: Reverse nodes in k-group.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+k: 3
+Output:
+
+Reversed in k-group: 3 -> 2 -> 1 -> 4 -> 5
+Logic:
+
+Use a dummy node and divide the list into groups of k nodes. Reverse each group and connect the reversed groups.
+Code:
+
+java
+Copy code
+public ListNode reverseKGroup(ListNode head, int k) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode pre = dummy;
+    ListNode curr = head;
+    int count = 0;
+    while (curr != null) {
+        count++;
+        curr = curr.next;
+    }
+    while (count >= k) {
+        ListNode start = pre.next;
+        ListNode then = start.next;
+        for (int i = 1; i < k; i++) {
+            start.next = then.next;
+            then.next = pre.next;
+            pre.next = then;
+            then = start.next;
+        }
+        pre = start;
+        count -= k;
+    }
+    return dummy.next;
+}
+Feel free to ask if you need further clarification or additional problems!
+
+You said:
+continue
+ChatGPT said:
+ChatGPT
+Certainly! Here are more linked list problems, their solutions, and explanations:
+---------------------------------------------------------------------------------------
+21. Merge Two Sorted Lists
+---------------------------------------------------------------------------------------
+
+Problem: Merge two sorted linked lists into one sorted linked list.
+
+Input:
+
+List 1: 1 -> 2 -> 4
+List 2: 1 -> 3 -> 4
+Output:
+
+Merged list: 1 -> 1 -> 2 -> 3 -> 4 -> 4
+Logic:
+
+Use two pointers to traverse both lists, and merge them by comparing nodes from each list.
+Code:
+
+java
+Copy code
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode current = dummy;
+    while (l1 != null && l2 != null) {
+        if (l1.val < l2.val) {
+            current.next = l1;
+            l1 = l1.next;
+        } else {
+            current.next = l2;
+            l2 = l2.next;
+        }
+        current = current.next;
+    }
+    current.next = (l1 != null) ? l1 : l2;
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+22. Reverse a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Reverse a singly linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+Output:
+
+Reversed list: 5 -> 4 -> 3 -> 2 -> 1
+Logic:
+
+Use three pointers (previous, current, next) to reverse the direction of the links in the list.
+Code:
+
+java
+Copy code
+public ListNode reverseList(ListNode head) {
+    ListNode prev = null;
+    ListNode curr = head;
+    while (curr != null) {
+        ListNode nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
+}
+---------------------------------------------------------------------------------------
+23. Intersection of Two Linked Lists (Detecting the Intersection Node)
+---------------------------------------------------------------------------------------
+
+Problem: Given two linked lists, find the node where they intersect.
+
+Input:
+
+List 1: 4 -> 1 -> 8 -> 4 -> 5
+List 2: 5 -> 0 -> 1 -> 8 -> 4 -> 5 (intersects at 8)
+Output:
+
+Intersection node: 8
+Logic:
+
+Use the two-pointer technique to handle lists of different lengths and find the intersection node.
+Code:
+
+java
+Copy code
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) return null;
+    ListNode a = headA;
+    ListNode b = headB;
+    while (a != b) {
+        a = (a == null) ? headB : a.next;
+        b = (b == null) ? headA : b.next;
+    }
+    return a;
+}
+---------------------------------------------------------------------------------------
+24. Detect a Cycle in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Determine if a linked list has a cycle.
+
+Input:
+
+List with a cycle.
+Output:
+
+True (if there is a cycle), False (if there is no cycle).
+Logic:
+
+Use Floyd’s Cycle Detection algorithm with two pointers (slow and fast).
+Code:
+
+java
+Copy code
+public boolean hasCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) return true;
+    }
+    return false;
+}
+---------------------------------------------------------------------------------------
+25. Flatten a Multilevel Doubly Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Flatten a multilevel doubly linked list.
+
+Input:
+
+A doubly linked list where some nodes have a child pointer that points to another doubly linked list.
+Output:
+
+Flattened doubly linked list.
+Logic:
+
+Use a depth-first search approach to recursively flatten the list.
+Code:
+
+java
+Copy code
+public Node flatten(Node head) {
+    Node dummy = new Node(0);
+    Node prev = dummy;
+    Stack<Node> stack = new Stack<>();
+    stack.push(head);
+    while (!stack.isEmpty()) {
+        Node curr = stack.pop();
+        prev.next = curr;
+        curr.prev = prev;
+        if (curr.next != null) stack.push(curr.next);
+        if (curr.child != null) {
+            stack.push(curr.child);
+            curr.child = null;
+        }
+        prev = curr;
+    }
+    dummy.next.prev = null;
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+26. Reverse Nodes in k-Group (with Modifications)
+---------------------------------------------------------------------------------------
+Problem: Reverse nodes in k-group, but handle cases where the number of nodes is less than k.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+k: 3
+Output:
+
+Reversed in k-group: 3 -> 2 -> 1 -> 4 -> 5
+Logic:
+
+Implement the same as previously described but make sure that if there are fewer than k nodes left, do not reverse them.
+Code:
+
+java
+Copy code
+public ListNode reverseKGroup(ListNode head, int k) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode pre = dummy;
+    ListNode curr = head;
+    int count = 0;
+    while (curr != null) {
+        count++;
+        curr = curr.next;
+    }
+    while (count >= k) {
+        ListNode start = pre.next;
+        ListNode then = start.next;
+        for (int i = 1; i < k; i++) {
+            start.next = then.next;
+            then.next = pre.next;
+            pre.next = then;
+            then = start.next;
+        }
+        pre = start;
+        count -= k;
+    }
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+27. Find the Middle Node of a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Find the middle node of a linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+Output:
+
+Middle node: 3
+Logic:
+
+Use two pointers (slow and fast). Move the slow pointer one step and the fast pointer two steps at a time. When the fast pointer reaches the end, the slow pointer will be at the middle.
+Code:
+
+java
+Copy code
+public ListNode findMiddle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+---------------------------------------------------------------------------------------
+28. Remove Duplicates from a Sorted Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Remove duplicate elements from a sorted linked list.
+
+Input:
+
+List: 1 -> 1 -> 2 -> 3 -> 3
+Output:
+
+List after removal: 1 -> 2 -> 3
+Logic:
+
+Traverse the list and remove duplicates by comparing adjacent nodes.
+Code:
+
+java
+Copy code
+public ListNode deleteDuplicates(ListNode head) {
+    ListNode curr = head;
+    while (curr != null && curr.next != null) {
+        if (curr.val == curr.next.val) {
+            curr.next = curr.next.next;
+        } else {
+            curr = curr.next;
+        }
+    }
+    return head;
+}
+---------------------------------------------------------------------------------------
+29. Remove Duplicates from an Unsorted Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Remove duplicates from an unsorted linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 2 -> 4 -> 5 -> 1
+Output:
+
+List after removal: 1 -> 2 -> 3 -> 4 -> 5
+Logic:
+
+Use a hash set to track seen values and remove duplicates.
+Code:
+
+java
+Copy code
+public ListNode deleteDuplicatesUnsorted(ListNode head) {
+    if (head == null) return null;
+    Set<Integer> seen = new HashSet<>();
+    ListNode curr = head;
+    ListNode prev = null;
+    while (curr != null) {
+        if (seen.contains(curr.val)) {
+            prev.next = curr.next;
+        } else {
+            seen.add(curr.val);
+            prev = curr;
+        }
+        curr = curr.next;
+    }
+    return head;
+}
+---------------------------------------------------------------------------------------
+30. Add Two Numbers Represented by Linked Lists (Forward Order)
+---------------------------------------------------------------------------------------
+
+Problem: Add two numbers represented by linked lists where the digits are stored in forward order.
+
+Input:
+
+List 1: 7 -> 2 -> 4 -> 3 (represents 7243)
+List 2: 5 -> 6 -> 4 (represents 564)
+Output:
+
+List after addition: 7 -> 8 -> 9 -> 7 (represents 7807)
+Logic:
+
+Reverse both lists, add them using the method for reversed lists, and then reverse the result.
+Code:
+
+java
+Copy code
+public ListNode addTwoNumbersForward(ListNode l1, ListNode l2) {
+    l1 = reverse(reverse(l1));
+    l2 = reverse(reverse(l2));
+    ListNode result = addTwoNumbersReverse(l1, l2);
+    return reverse(result);
+}
+
+private ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    ListNode curr = head;
+    while (curr != null) {
+        ListNode next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+---------------------------------------------------------------------------------------
+31. Split a Circular Linked List into Two Halves
+---------------------------------------------------------------------------------------
+
+Problem: Split a circular linked list into two halves.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5 (circular)
+Output:
+
+Two halves: 1 -> 2 -> 3 and 4 -> 5
+Logic:
+
+Use the slow and fast pointer technique to find the midpoint, and then break the list into two halves.
+Code:
+
+java
+Copy code
+public ListNode[] splitCircularList(ListNode head) {
+    if (head == null || head.next == head) return new ListNode[]{head, null};
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast.next != head && fast.next.next != head) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    ListNode secondHead = slow.next;
+    slow.next = head;
+    fast.next = secondHead;
+    return new ListNode[]{head, secondHead};
+}
+---------------------------------------------------------------------------------------
+32. Find the Start of the Loop in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Find the start node of the loop in a linked list.
+
+Input:
+
+List with a loop.
+Output:
+
+Start of the loop node.
+Logic:
+
+After detecting the cycle, use another pointer to find the start of the loop by traversing from the head and the meeting point.
+Code:
+
+java
+Copy code
+public ListNode detectCycleStart(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    boolean hasCycle = false;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) {
+            hasCycle = true;
+            break;
+        }
+    }
+    if (!hasCycle) return null;
+    ListNode start = head;
+    while (start != slow) {
+        start = start.next;
+        slow = slow.next;
+    }
+    return start;
+}
+---------------------------------------------------------------------------------------
+33. Delete Node in a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Delete a node in a linked list given only access to that node.
+
+Input:
+
+Node to delete: node with value 5
+Output:
+
+List after deletion: 1 -> 2 -> 3 -> 4
+Logic:
+
+Copy the value from the next node into the current node and delete the next node.
+Code:
+
+java
+Copy code
+public void deleteNode(ListNode node) {
+    if (node == null || node.next == null) return;
+    ListNode nextNode = node.next;
+    node.val = nextNode.val;
+    node.next = nextNode.next;
+}---------------------------------------------------------------------------------------
+34. Remove Elements from a Linked List
+---------------------------------------------------------------------------------------
+
+Problem: Remove all nodes with a specific value from a linked list.
+
+Input:
+
+List: 1 -> 2 -> 6 -> 3 -> 4 -> 5 -> 6
+Value to remove: 6
+Output:
+
+List after removal: 1 -> 2 -> 3 -> 4 -> 5
+Logic:
+
+Traverse the list and adjust pointers to skip nodes with the given value.
+Code:
+
+java
+Copy code
+public ListNode removeElements(ListNode head, int val) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode curr = dummy;
+    while (curr.next != null) {
+        if (curr.next.val == val) {
+            curr.next = curr.next.next;
+        } else {
+            curr = curr.next;
+        }
+    }
+    return dummy.next;
+}
+---------------------------------------------------------------------------------------
+35. Delete Middle Node of a Linked List
+---------------------------------------------------------------------------------------
+Problem: Delete the middle node of a linked list.
+
+Input:
+
+List: 1 -> 2 -> 3 -> 4 -> 5
+Output:
+
+List after deletion: 1 -> 2 -> 4 -> 5
+Logic:
+
+Use two pointers to find the middle and then delete the middle node.
+Code:
+
+java
+Copy code
+public ListNode deleteMiddle(ListNode head) {
+    if (head == null || head.next == null) return null;
+    ListNode slow = head;
+    ListNode fast = head;
+    ListNode prev = null;
+    while (fast != null && fast.next != null) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    prev.next = slow.next;
+    return head;
+}
+Feel free to let me know if you need more problems or any further clarifications!
+
+
+
+
+
+
+
+
